@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
@@ -157,5 +158,5 @@ var coordinates = {{ $polygon}};
           polygons.push(coordinates);
 @endforeach
   </script>
-  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.8.0/proj4.js"></script>
   

@@ -1,6 +1,9 @@
 <?php
 
-use App\Http\Controllers\MapController;
+use App\Http\Controllers\VungtrongController;
+ use App\Http\Controllers\SauBenhController;
+// use App\Http\Controllers\MapController;
+// use App\Http\Controllers\MapController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,29 +16,35 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', [VungtrongController::class, 'index']);
+Route::get('/h', [VungtrongController::class, 'index']);
 Route::post('/insert',[VungtrongController::class, 'insert'])->name('insert');;
 
 // Bảng Bàng tư vấn
-Route::get('/tu-van', 'TuVanController@index'); // Lấy danh sách
-Route::post('/tu-van', 'TuVanController@store'); // Thêm mới
-Route::put('/tu-van/{id}', 'TuVanController@update'); // Cập nhật 
-Route::delete('/tu-van/{id}', 'TuVanController@destroy'); // Xóa
+Route::get('/tu-van', [TuVanController::class, 'index']);  
+Route::post('/tu-van', [TuVanController::class, 'store']);
+Route::put('/tu-van/{id}', [TuVanController::class, 'update']); 
+Route::delete('/tu-van/{id}', [TuVanController::class, 'destroy']);
 
-// Bảng Cán bộ quản lý
-Route::get('/can-bo', 'CanBoController@index');
-Route::post('/can-bo', 'CanBoController@store');
-Route::put('/can-bo/{id}', 'CanBoController@update'); 
-Route::delete('/can-bo/{id}', 'CanBoController@destroy');
+// Cán bộ quản lý
+Route::get('/can-bo', [CanBoController::class, 'index']);
+Route::post('/can-bo', [CanBoController::class, 'store']);
+Route::put('/can-bo/{id}', [CanBoController::class, 'update']);
+Route::delete('/can-bo/{id}', [CanBoController::class, 'destroy']);
 
-// Bảng Sản lượng
-Route::get('/san-luong', 'SanLuongController@index');  
-Route::post('/san-luong', 'SanLuongController@store');
-Route::put('/san-luong/{id}', 'SanLuongController@update');
-Route::delete('/san-luong/{id}', 'SanLuongController@destroy');
+// Sản lượng
+Route::get('/san-luong', [SanLuongController::class, 'index']);  
+Route::post('/san-luong', [SanLuongController::class, 'store']);
+Route::put('/san-luong/{id}', [SanLuongController::class, 'update']);
+Route::delete('/san-luong/{id}', [SanLuongController::class, 'destroy']);
 
-// Lấy danh sách
-Route::get('/sau-benh', 'SauBenhController@getList');
-Route::post('/sau-benh', 'SauBenhController@create');  
-Route::put('/sau-benh/{id}', 'SauBenhController@update');
-Route::delete('/sau-benh/{id}', 'SauBenhController@delete');
+// Sâu bệnh
+Route::get('/', [SauBenhController::class, 'index']);
+Route::post('/sau-benh', [SauBenhController::class, 'create']);  
+Route::put('/sau-benh/{id}', [SauBenhController::class, 'update']);
+Route::delete('/sau-benh/{id}', [SauBenhController::class, 'delete']);
+
+// Vùng trồng
+Route::get('/vung-trong', [VungtrongController::class, 'index']);
+Route::post('/vung-trong/insert', [VungtrongController::class, 'insert']);
+Route::get('/vung-trong/delete/{id}', [VungtrongController::class, 'delete']);  
+Route::get('/vung-trong/update', [VungtrongController::class, 'update']);

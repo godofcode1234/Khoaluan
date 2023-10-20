@@ -10,32 +10,32 @@ class SanluongController extends Controller
 {
     // Lấy danh sách 
 public function getList() {
-    return DB::table('Sản lượng')->get();
+    return DB::table('san_luong')->get();
   }
   
   // Thêm mới  
   public function create($vungTrongId, $thoiGianThuHoach, $soLuong, $donGia, $chiPhi, $loiNhuan) {
-    return DB::table('Sản lượng')->insert([
-      'id vùng trồng' => $vungTrongId,
-      'thời gian thu hoạch' => $thoiGianThuHoach, 
-      'số lượng' => $soLuong,
-      'đơn giá' => $donGia,
-      'chi phí' => $chiPhi,
-      'lợi nhuận' => $loiNhuan
+    return DB::table('san_luong')->insert([
+      'idvungtrong' => $vungTrongId,
+      'thoigianthuhoach' => $thoiGianThuHoach, 
+      'soluong' => $soLuong,
+      'dongia' => $donGia,
+      'chiphi' => $chiPhi,
+      'loinhuan' => $loiNhuan
     ]);
   }
   
   // Cập nhật  
   public function update($id, $data) {
-    return DB::table('Sản lượng')
-            ->where('id sản lượng', $id)
+    return DB::table('san_luong')
+            ->where('idsanluong', $id)
             ->update($data);
   }
   
   // Xóa
   public function delete($id) {
-    return DB::table('Sản lượng')
-           ->where('id sản lượng', $id)
+    return DB::table('san_luong')
+           ->where('idsanluong', $id)
            ->delete(); 
   }
 }

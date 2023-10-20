@@ -5,18 +5,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use Brian2694\Toastr\Facades\Toastr;
-class MapController extends Controller
+class VungtrongController extends Controller
 {  
-    public function index(Request $request) {
-
-     
+    public function index(Request $request) { 
       
     $polygonCoordinates = DB::table('sde.vung_trong')
     
     ->get()
     ->pluck('shape');
                              
-    // Gán vào biến 
     
     return view('welcome', ['polygonCoordinates' => $polygonCoordinates]);
   
@@ -28,9 +25,6 @@ class MapController extends Controller
       'shape' =>  $coordinates,
       'iddiachinh' => 1
     ]);
-   
-  
-    
     return redirect()->back();
   }
   public function delete($id) {
@@ -44,18 +38,19 @@ class MapController extends Controller
     return redirect()->back()->with('error', 'Không tìm thấy dữ liệu');
   
   }
-  public function update(Request $request, $id) {
+  public function update(Request $request) {
 
-    $updated = DB::table('sde.vung_trong')
-                ->where('id', $id)
-                ->update(['name' => $request->name, 
-                          'description' => $request->description]);
+    // $updated = DB::table('sde.vung_trong')
+    //             ->where('id', $id)
+    //             ->update(['name' => $request->name, 
+    //                       'description' => $request->description]);
   
-    if($updated) {
-      return redirect()->back()->with('success', 'Cập nhật thành công');
-    }
+    // if($updated) {
+    //   return redirect()->back()->with('success', 'Cập nhật thành công');
+    // }
   
-    return redirect()->back()->with('error', 'Không tìm thấy dữ liệu');
+    return view('test');
   
   }
 }
+ 

@@ -2,41 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SauBenh;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
-use Brian2694\Toastr\Facades\Toastr;            
-class SaubenhController extends Controller
+class SauBenhController extends Controller
 {
-    // Lấy danh sách 
-public function getList() {
-    return DB::table('Sâu bệnh')->get();
-  }
-  
-  // Thêm mới
-  public function create($vungTrongId, $tenSauBenh, $mucDoGayHai, $thoiGianPhatHien, $hinhAnh, $moTa, $phuongPhap) {
-    return DB::table('Sâu bệnh')->insert([
-      'id vùng trồng' => $vungTrongId,
-      'tên sâu bệnh' => $tenSauBenh,
-      'mức độ gây hại' => $mucDoGayHai, 
-      'thời gian phát hiện' => $thoiGianPhatHien,
-      'hình ảnh' => $hinhAnh,
-      'mô tả' => $moTa,
-      'phương pháp' => $phuongPhap
-    ]);
-  }
-  
-  // Cập nhật  
-  public function update($id, $data) {
-    return DB::table('Sâu bệnh')
-            ->where('id sâu bệnh', $id)
-            ->update($data); 
-  }
-  
-  // Xóa
-  public function delete($id) {
-    return DB::table('Sâu bệnh')
-           ->where('id sâu bệnh', $id)  
-           ->delete();
-  }
+    public function index()
+    {
+        $sauBenhs = SauBenh::all();
+        return view('test', compact('sauBenhs'));
+    }
+
+    public function create()
+    {
+        return view('test');
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'idsaubenh' => 'required',
+            'idvungtrong' => 'required',
+            'tensaubenh' => 'required|max:20',
+            'mucdogayhai' => 'required|integer',
+            'thoigianphathien' => 'required',
+            'hinhanh' => 'nullable|integer',
+            'mota' => 'nullable',
+            'phuongphap' => 'nullable'
+        ]);
+
+        SauBenh::create($validatedData);
+        return redirect()->route('test')->with('success', 'Dữ liệu đã được tạo thành công.');
+    }
+
+    public function show(SauBenh $sauBenh)
+    {
+        return view('test', compact('sauBenh'));
+    }
+
+    public function edit(SauBenh $sauBenh)
+    {
+        return view('test', compact('sauBenh'));
+    }
+
+    public function update(Request $request, SauBenh $sauBenh)
+    {
+        $validatedData = $request->validate([
+            'idsaubenh' => 'required',
+            'idvungtrong' => 'required',
+            'tensaubenh' => 'required|max:20',
+            'mucdogayhai' => 'required|integer',
+            'thoigianphathien' => 'required',
+            'hinhanh' => 'nullable|integer',
+            'mota' => 'nullable',
+            'phuongphap' => 'nullable'
+        ]);
+
+        $sauBenh->update($validatedData);
+        return redirect()->route('test')->with('success', 'Dữ liệu đã được cập nhật thành công.');
+    }
+
+    public function destroy(SauBenh $sauBenh)
+    {
+        $sauBenh->delete();
+        return redirect()->route('test')->with('success', 'Dữ liệu đã được xóa thành công.');
+    }
 }
