@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\BangKhuyenCao;
 use Brian2694\Toastr\Facades\Toastr;
+
 class KhuyencaoController extends Controller
 {
     public function index()
     {
-        $khuyencaos = BangKhuyenCao::all();
-        return view('khuyencao.index', compact('khuyencaos'));
+        $khuyencao = BangKhuyenCao::all();
+        return view('pagestest.khuyencao', ['khuyencao' => $khuyencao]);
     }
 
     public function create()
@@ -21,14 +22,8 @@ class KhuyencaoController extends Controller
 
     public function store(Request $request)
     {
-        $khuyencao = new BangKhuyenCao();
-        $khuyencao->idkhuyencao = $request->input('idkhuyencao');
-        $khuyencao->noidung = $request->input('noidung');
-        $khuyencao->thoigian = $request->input('thoigian');
-        $khuyencao->idcanbo = $request->input('idcanbo');
-        $khuyencao->save();
-
-        return redirect()->route('khuyencao.index');
+        BangKhuyenCao::create($request->all());
+        return response(['success' => 'Employee created successfully.']);
     }
 
     public function edit($idkhuyencao, $idcanbo)
@@ -49,9 +44,7 @@ class KhuyencaoController extends Controller
 
     public function destroy($idkhuyencao, $idcanbo)
     {
-        $khuyencao = BangKhuyenCao::findOrFail(['idkhuyencao' => $idkhuyencao, 'idcanbo' => $idcanbo]);
-        $khuyencao->delete();
-
-        return redirect()->route('khuyencao.index');
+        BangKhuyenCao::where('idkhuyencao', $idkhuyencao)->where('idcanbo', $idcanbo)->delete();
+        return response()->json(['success' => true]);
     }
 }

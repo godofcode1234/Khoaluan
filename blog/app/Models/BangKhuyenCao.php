@@ -9,7 +9,7 @@ class BangKhuyenCao extends Model
 {
     use HasFactory;
 
-    protected $table = 'bang_khuyen_cao';
+    protected $table = 'sde.bang_khuyen_cao';
     protected $primaryKey = ['idkhuyencao', 'idcanbo'];
     public $incrementing = false;
     protected $fillable = ['idkhuyencao', 'noidung', 'thoigian', 'idcanbo'];

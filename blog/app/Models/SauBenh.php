@@ -9,7 +9,7 @@ class SauBenh extends Model
 {
     use HasFactory;
 
-    protected $table = 'sau_benh';
+    protected $table = 'sde.sau_benh';
     protected $primaryKey = ['idsaubenh', 'idvungtrong'];
     public $incrementing = false;
     public $timestamps = false;

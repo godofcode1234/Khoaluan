@@ -9,13 +9,13 @@ class SauBenhController extends Controller
 {
     public function index()
     {
-        $sauBenhs = SauBenh::all();
-        return view('test', compact('sauBenhs'));
+        $saubenh = SauBenh::all();
+        return view('pagestest.saubenh')->with('saubenh', $saubenh);
     }
 
     public function create()
     {
-        return view('test');
+        return view('saubenh.create');
     }
 
     public function store(Request $request)
@@ -32,7 +32,7 @@ class SauBenhController extends Controller
         ]);
 
         SauBenh::create($validatedData);
-        return redirect()->route('test')->with('success', 'Dữ liệu đã được tạo thành công.');
+        return redirect()->route('saubenh.index')->with('success', 'Dữ liệu đã được tạo thành công.');
     }
 
     public function show(SauBenh $sauBenh)
