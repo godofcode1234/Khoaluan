@@ -6,7 +6,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <style>
     #bang-khuyen-cao tbody tr.active {
@@ -34,13 +34,7 @@
         //     });
         // });
     </script>
-    <script>
-      @if ($errors->any())
-  <div class="alert alert-danger">
-    {{ $errors->first() }}
-  </div>
-@endif
-    </script>
+    
 <form>
                        
     <table id="bang-khuyen-cao" class="table table-bordered table-hover">
@@ -60,37 +54,45 @@
         @foreach ($vungtrong as $kc)
             <tr id="list-non">
                 <td><a data-name="a" data-type="text">{{ $kc->iddiachinh }}</a></td>
-                <td><a data-name="b" data-type="text">{{ $kc->idvungtrong }}</a></td>
+                <td data-id="{{ $kc->idvungtrong }}">{{ $kc->idvungtrong }}</a></td>
                 <td><a data-name="c" data-type="text">{{ $kc->dientichtrong }}</a></td>
-                <td><a data-nzame="d" data-type="text">{{ $kc->giongcay }}</a></td>
+                <td><a data-name="d" data-type="text">{{ $kc->giongcay }}</a></td>
                 <td><a data-name="e" data-type="text">{{ $kc->tuoicay }}</a></td>
                 <td><a data-name="f" data-type="text">{{ $kc->giaidoansinhtruong }}</a></td>
                 <td><a data-name="g" data-type="text">{{ $kc->ngaytrong }}</a></td>
-                <td><a data-nzame="h" data-type="text">{{ $kc->loaidat }}</a></td>
+                <td><a data-name="h" data-type="text">{{ $kc->loaidat }}</a></td>
                 
                 <td>
                     <button onclick="editRow(this)">Chỉnh sửa</button> <!-- Nút chỉnh sửa -->
-                    <button onclick="deleteRow(this)">Xóa</button> <!-- Nút xóa -->
+                    <button onclick="deleteRow(this,{{$kc->idvungtrong}})">Xóa</button> <!-- Nút xóa -->
                 </td>
             </tr>
         @endforeach
     </tbody>
 </table>
 
-<script>
-  
-    function deleteRow(button) {
-        var row = button.parentNode.parentNode; 
-  let idvungtrong = row.querySelector("td[data-id]").dataset.id;
+<script>  
+     function deleteRow(button, idvungtrong) {
+  var row = button.parentNode.parentNode;
+  if (!idvungtrong) {
+    idvungtrong = row.querySelector("td[data-id]").getAttribute("data-id");
+  }  
   $.ajax({
-    url: '/vungtrong/delete/' + idvungtrong,
+    url: '/vungtrong/' + idvungtrong,
     type: 'DELETE',
     headers: {
       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     },
     success: function(response) {
+      // Kiểm tra xem dữ liệu đã được xóa hay chưa
+      if (!document.getElementById('row-' + idvungtrong)) {
+        console.log('Dữ liệu đã được xóa');
+      } else {
+        console.log('Dữ liệu chưa được xóa');
+      }
       // Xóa dòng khỏi bảng
       row.remove();
+      console.log("ok");
     },
     error: function(xhr, status, error) {
       // Xử lý lỗi (nếu có)
@@ -98,7 +100,7 @@
       console.log(error);
     }
   });
-    }
+}
 </script>
 
 </form>
@@ -107,12 +109,11 @@
  var formData = $(this).serialize();
  $.ajax({
    url: "{{ route('vungtrong.store') }}",
-   type: "POST",
+   type: 'POST',
    headers: {
        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
      },
    data: formData,
-   cache: false,
    success: function(response) {
      // Thêm dữ liệu thành công
      console.log(response);      
@@ -121,7 +122,7 @@
  });
  </script>
  
- <script>
+ {{-- <script>
     // Lưu trữ dữ liệu của dòng được chọn
     let selectedRowData = {};
 
@@ -171,5 +172,12 @@
         selectedRowData = {};
         this.reset();
     });
-</script>
+</script> --}}
 </body>
+<script>
+  @if ($errors->any())
+<div class="alert alert-danger">
+{{ $errors->first() }}
+</div>
+@endif
+</script>

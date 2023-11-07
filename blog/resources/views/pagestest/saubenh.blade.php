@@ -12,7 +12,7 @@
 
     <form method="POST" action="{{ route('saubenh.store') }}">
     @csrf
-    <input type="text" name="idsaubenh" placeholder="ID sau bệnh" required>
+    <input type="text" name="idsaubenh" placeholder="ID sau bệnh">
     <input type="text" name="idvungtrong" placeholder="ID vùng trồng" required>
     <input type="text" name="tensaubenh" placeholder="Tên sau bệnh" required>
     <input type="number" name="mucdogayhai" placeholder="Mức độ gây hại" required>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\VungTrong;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Brian2694\Toastr\Facades\Toastr;
@@ -15,8 +16,17 @@ class VungtrongController extends Controller
     // ->pluck('shape');
     return view('pagestest.vungtrong', ['vungtrong' => $vungtrong]);
   }
+  // public function create()
+  // {
+  //   $shape = DB::table('sde.vung_trong')
+  //     ->get();
+  //   return view('welcome', ['shape' => $shape]);
+  // }
   public function insert(Request $request)
   {
+    $shape = $request->input('shape');
+    $shape = $this->removeBrackets($shape);
+    $dataJson = json_encode($shape);
     $data = [
       'iddiachinh' => $request->input('iddiachinh'),
       'idvungtrong' => $request->input('idvungtrong'),
@@ -28,18 +38,23 @@ class VungtrongController extends Controller
       'loaidat' => $request->input('loaidat'),
     ];
 
-    $insert = DB::table('sde.vung_trong')->insert([
-      $data
-    ]);
-    return response(['success' => 'Employee created successfully.']);
+    $insert = DB::table('sde.vung_trong')->insert(array_merge(
+      $data,
+      ['shape' => $dataJson]
+    ));
+    return redirect()->back()->with('success', 'Cập nhật thành công');
+  }
+
+
+  public function removeBrackets($input)
+  {
+    $data = json_decode($input, true);
+    return $data[0];
   }
   public function delete($id)
   {
-    $deleted = DB::table('sde.vung_trong')->where('id', $id)->delete();
-    if ($deleted) {
-      return redirect()->back()->with('success', 'Xóa thành công');
-    }
-    return redirect()->back()->with('error', 'Không tìm thấy dữ liệu');
+    VungTrong::where('idvungtrong', $id)->delete();
+    return response()->json(['success' => true]);
   }
   public function update(Request $request)
   {
@@ -53,6 +68,11 @@ class VungtrongController extends Controller
     //   return redirect()->back()->with('success', 'Cập nhật thành công');
     // }
 
-    return view('test');
+
+  }
+  public function edit($id)
+  {
+    $vungtrong = DB::table('bando')->where('shape')->get();
+    return view('pagestest.vungtrong')->with('vungtrong', $vungtrong);
   }
 }

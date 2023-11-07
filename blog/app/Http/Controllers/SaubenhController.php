@@ -13,15 +13,19 @@ class SauBenhController extends Controller
         return view('pagestest.saubenh')->with('saubenh', $saubenh);
     }
 
-    public function create()
-    {
-        return view('saubenh.create');
-    }
+    // public function create()
+    // {
+    //     $shapesaubenh =  SauBenh::all();
+    //     return view('welcome', ['shapesaubenh' => $shapesaubenh]);
+    // }
 
     public function store(Request $request)
     {
+        $shape = $request->input('shapesaubenh');
+        $shape = $this->removeBrackets($shape);
+        $dataJson = json_encode($shape);
         $validatedData = $request->validate([
-            'idsaubenh' => 'required',
+
             'idvungtrong' => 'required',
             'tensaubenh' => 'required|max:20',
             'mucdogayhai' => 'required|integer',
@@ -30,9 +34,16 @@ class SauBenhController extends Controller
             'mota' => 'nullable',
             'phuongphap' => 'nullable'
         ]);
+        $data = array_merge($validatedData, ['shapesaubenh' => $dataJson]);
 
-        SauBenh::create($validatedData);
-        return redirect()->route('saubenh.index')->with('success', 'Dữ liệu đã được tạo thành công.');
+        SauBenh::create($data);
+
+        return redirect()->back()->with('success', 'Cập nhật thành công');
+    }
+    public function removeBrackets($input)
+    {
+        $data = json_decode($input, true);
+        return $data[0];
     }
 
     public function show(SauBenh $sauBenh)
@@ -56,6 +67,7 @@ class SauBenhController extends Controller
             'hinhanh' => 'nullable|integer',
             'mota' => 'nullable',
             'phuongphap' => 'nullable'
+
         ]);
 
         $sauBenh->update($validatedData);

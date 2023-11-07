@@ -53,34 +53,56 @@
     </table>
 </form>
 <script>
-    function deleteRow(button) {
-    var row = button.parentNode.parentNode;
-    let idkhuyencao = row.querySelector("td[data-id]").dataset.idkhuyencao;
-    let idcanbo = row.querySelector("td[data-id]").dataset.idcanbo;
-    $.ajax({
-      url: '/khuyencao/' + idkhuyencao + '/' + idcanbo,
-      type: 'DELETE',
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      success: function(response) {
-        // Kiểm tra xem dữ liệu đã được xóa hay chưa
-        if (!document.getElementById('row-' + idkhuyencao + '-' + idcanbo)) {
-          console.log('Dữ liệu đã được xóa');
-        } else {
-          console.log('Dữ liệu chưa được xóa');
-        }
-        // Xóa dòng khỏi bảng
-        row.remove();
-        console.log("ok");
-      },
-      error: function(xhr, status, error) {
-        // Xử lý lỗi (nếu có)
-        alert('Có lỗi xảy ra khi xóa dữ liệu');
-        console.log(error);
-      }
-    });
+  $("#form-insert").submit(function(e) {
+var formData = $(this).serialize();
+$.ajax({
+ url: '/khuyencao/store',
+ type: 'POST',
+ headers: {
+     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+   },
+ data: formData,
+ cache: false,
+ success: function(response) {
+   // Thêm dữ liệu thành công
+   console.log(response);     
  }
+});
+});
+
+    function deleteRow(button, idkhuyencao, idcanbo) {
+  var row = button.parentNode.parentNode;
+  if (!idkhuyencao || !idcanbo) {
+    idkhuyencao = row.querySelector("td[data-id]").getAttribute("data-id");
+    idcanbo = row.querySelector("td[data-id]").getAttribute("data-id");
+  }
+  
+  console.log(idkhuyencao + " " + idcanbo);
+  
+  $.ajax({
+    url: '/khuyencao/' + idkhuyencao + '/' + idcanbo,
+    type: 'DELETE',
+    headers: {
+      'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    },
+    success: function(response) {
+      // Kiểm tra xem dữ liệu đã được xóa hay chưa
+      if (!document.getElementById('row-' + idkhuyencao + '-' + idcanbo)) {
+        console.log('Dữ liệu đã được xóa');
+      } else {
+        console.log('Dữ liệu chưa được xóa');
+      }
+      // Xóa dòng khỏi bảng
+      row.remove();
+      console.log("ok");
+    },
+    error: function(xhr, status, error) {
+      // Xử lý lỗi (nếu có)
+      alert('Có lỗi xảy ra khi xóa dữ liệu');
+      console.log(error);
+    }
+  });
+}
   </script>
 {{-- <script>
   // Lưu trữ dữ liệu của dòng được chọn
@@ -132,23 +154,41 @@
 
 
 </body>
-{{-- <script>
-    $("#form-insert").submit(function(e) {
- var formData = $(this).serialize();
- $.ajax({
-   url: "{{ route('khuyencao.store') }}",
-   type: "POST",
-   headers: {
-       'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-     },
-   data: formData,
-   cache: false,
-   success: function(response) {
-     // Thêm dữ liệu thành công
-     console.log(response);     
-   }
+<script>
+  // Lấy tất cả các dòng 
+var rows = document.querySelectorAll('table tr');
+
+// Duyệt qua các dòng
+rows.forEach(function(row) {
+
+ // Gắn sự kiện click phải 
+ row.addEventListener('contextmenu', function(e) {
+   
+   // Ngăn load menu mặc định
+   e.preventDefault();
+   
+   // Hiển thị context menu
+   showContextMenu(e); 
  });
- });
- </script> --}}
  
- 
+});
+function showContextMenu(e) {
+
+// Tạo context menu
+var menu = document.createElement('div');
+menu.classList.add('context-menu');
+
+menu.innerHTML = `    
+ <a href="#">Sửa</a>
+ <a href="#">Xóa</a>
+`;
+
+// Đặt vị trí menu
+menu.style.top = e.pageY + 'px';
+menu.style.left = e.pageX + 'px';
+
+// Hiển thị menu
+document.body.appendChild(menu);
+
+}
+</script>
