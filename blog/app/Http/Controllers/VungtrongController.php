@@ -72,7 +72,19 @@ class VungtrongController extends Controller
   }
   public function edit($id)
   {
-    $vungtrong = DB::table('bando')->where('shape')->get();
+    $vungtrong = DB::table('sde.vung_trong')->where('idvungtrong', $id)->get();
     return view('pagestest.vungtrong')->with('vungtrong', $vungtrong);
+  }
+  public function getId(Request $request)
+  {
+    $shape = $request->input('shape');
+    if (!$shape) {
+      return response()->json('Lỗi: shape không có giá trị', 400);
+    }
+    $id = DB::table('sde.vung_trong')
+      ->where('shape', $shape)
+      ->value('idvungtrong');
+
+    return response()->json($id);
   }
 }

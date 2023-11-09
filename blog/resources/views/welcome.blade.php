@@ -156,27 +156,31 @@ closeButtonsaubenh.addEventListener("click", closeDialogsaubenh);
 </body>
 </html>
 <script>
-var polygons = [];
-@foreach ($shape as $polygon);
-var coordinates = {{ $polygon->shape}};
-if(coordinates!=null)
-{
-        polygons.push(coordinates);
-       // alert(polygons);
-}
-@endforeach
+
+  var polygons = [];
+
+  @foreach ($shape as $polygon)
+    var coordinates = {{ $polygon->shape}};
+    if(coordinates!=null) {
+      polygons.push(coordinates); 
+    }
+  @endforeach
+
+  var polygonssaubenh = [];  
+
+  @foreach ($shapesaubenh as $polygon)
+    var coordinates = {{ $polygon->shapesaubenh}};
+    if(coordinates!=null) {
+      polygonssaubenh.push(coordinates);
+    }
+  @endforeach
+
+  // Giờ có thể sử dụng polygons, polygonssaubenh ở đây
+
 </script>
 <script>
-  var polygonssaubenh = [];
-  @foreach ($shapesaubenh as $polygon);
-  var coordinates = {{ $polygon->shapesaubenh}};
-  if(coordinates!=null)
-  {
-          polygonssaubenh.push(coordinates);
-         
-  }
-  @endforeach
-  </script>
+   
+</script>
 {{-- <script>
 var paths = [];
 @foreach ($polygonCoordinates as $polygon);
@@ -213,3 +217,4 @@ function closeDialog(event) {
   opendialogButton.style.display = "none";
 }
 </script>
+

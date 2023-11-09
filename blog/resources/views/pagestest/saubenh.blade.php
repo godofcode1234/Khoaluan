@@ -17,7 +17,7 @@
     <input type="text" name="tensaubenh" placeholder="Tên sau bệnh" required>
     <input type="number" name="mucdogayhai" placeholder="Mức độ gây hại" required>
     <input type="text" name="thoigianphathien" id="thoigian" placeholder="Thời gian phát hiện" required>
-    <input type="number" name="hinhanh" placeholder="Hình ảnh" min="0">
+    <input type="file" name="hinhanh" placeholder="Hình ảnh" value="" multiple>
     <textarea name="mota" placeholder="Mô tả"></textarea>
     <textarea name="phuongphap" placeholder="Phương pháp"></textarea>
     <button type="submit">Lưu</button>

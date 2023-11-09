@@ -41,10 +41,11 @@ Route::put('/saubenh/{id}', [SauBenhController::class, 'update']);
 Route::delete('/saubenh/{id}', [SauBenhController::class, 'delete']);
 
 // Vùng trồng
+Route::get('/getid', [VungtrongController::class, 'getId']);
 Route::get('/vungtrong', [VungtrongController::class, 'index'])->name('vungtrong.index');
 Route::post('/sinsert/ok', [VungtrongController::class, 'insert'])->name('vungtrong.store');
 Route::delete('/vungtrong/{id}', [VungtrongController::class, 'delete']);
-Route::get('/vungtrong/update', [VungtrongController::class, 'update']);
+Route::get('/vungtrong/update/{id}', [VungtrongController::class, 'edit']);
 
 Route::get('/khuyencao', [KhuyencaoController::class, 'index'])->name('khuyencao.index');
 Route::get('/khuyencao/create', [KhuyencaoController::class, 'create'])->name('khuyencao.create');

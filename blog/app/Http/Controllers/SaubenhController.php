@@ -30,7 +30,7 @@ class SauBenhController extends Controller
             'tensaubenh' => 'required|max:20',
             'mucdogayhai' => 'required|integer',
             'thoigianphathien' => 'required',
-            'hinhanh' => 'nullable|integer',
+            'hinhanh' => 'nullable',
             'mota' => 'nullable',
             'phuongphap' => 'nullable'
         ]);
